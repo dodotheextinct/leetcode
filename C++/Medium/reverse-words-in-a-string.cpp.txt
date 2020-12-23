@@ -1,0 +1,42 @@
+class Solution 
+{
+public:
+    string reverseWords(string s) 
+    {
+        string res;
+        vector <string> word_vec;
+        string word;
+        for (auto c : s)
+        {
+            if (c == ' ')
+            {
+                if (word == "")
+                {
+                    continue;
+                }
+                else
+                {
+                    word_vec.push_back (word);
+                    word = "";
+                }
+            }
+            else
+            {
+                word += c;
+            }
+        }
+        if (word != "")
+        {
+            word_vec.push_back (word);
+            word = "";
+        }
+        reverse (word_vec.begin (), word_vec.end ());
+        for (auto x : word_vec)
+        {
+            res += x;
+            res += " ";
+        }
+        res = res.substr(0, res.size() - 1);
+        return res;
+    }
+};
