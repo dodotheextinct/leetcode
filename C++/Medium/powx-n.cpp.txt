@@ -1,0 +1,110 @@
+class Solution {
+public:
+    double myPow(double x, int n) 
+    {
+        double res = 1;
+        double prev_val;
+        double curr_val;
+        long int longn = (long) n;
+        if (n == 0)
+        {
+            res = 1;
+        }
+        else if (longn > 0)
+        {
+            if (x == 0)
+            {
+                res = 1;
+            }
+            else if (x == 1)
+            {
+                res = 1;
+            }
+            else if (x == -1)
+            {
+                if (longn % 2 == 0)
+                {
+                    res = 1;
+                }
+                else
+                {
+                    res = -1;
+                }
+            }
+            else
+            {
+                for (int i = 1; i <= longn; ++i)
+                {
+                    if (i == 1)
+                    {
+                        prev_val = x;
+                        res *= x;
+                    }
+                    else
+                    {
+                        res *= x;
+                        curr_val = res;
+                        if (prev_val == curr_val)
+                        {
+                            return res;
+                        }
+                        else
+                        {
+                            prev_val = curr_val;
+                        }    
+                    }
+                }
+            }
+        }
+        else
+        {
+            longn = -longn; // hack
+            cout << "longn : " << longn;
+            if (x == 0)
+            {
+                res = 1;
+            }
+            else if (x == 1)
+            {
+                res = 1;
+            }
+            else if (x == -1)
+            {
+                if (longn % 2 == 0)
+                {
+                    res = 1;
+                }
+                else
+                {
+                    res = -1;
+                }
+            }
+            else
+            {
+                for (int i = 1; i <= longn; ++i)
+                {
+                    if (i == 1)
+                    {
+                        prev_val = x;
+                        res *= x;
+                    }
+                    else
+                    {
+                        res *= x;
+                        curr_val = res;
+                        if (prev_val == curr_val)
+                        {
+                            return (1 / res);
+                        }
+                        else
+                        {
+                            prev_val = curr_val;
+                        }    
+                    }
+                }
+                res = 1 / res;
+            }
+        }
+        return res;
+    }
+};
