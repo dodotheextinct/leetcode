@@ -1,0 +1,129 @@
+class Twitter 
+{
+public:
+    int timestamp = 0;
+    unordered_map <int, vector <pair <int, int>>> tweets;
+    unordered_map <int, vector <int>> follows;
+    
+    bool exists (int val, vector <int> v)
+    {
+        bool res = false;
+        for (auto x : v)
+        {
+            if (x == val)
+            {
+                res = true;
+                break;
+            }
+        }
+        return res;
+    }
+    
+    /** Initialize your data structure here. */
+    Twitter() 
+    {
+        
+    }
+    
+    /** Compose a new tweet. */
+    void postTweet(int userId, int tweetId)
+    {
+        vector <pair <int, int>> usertweets = tweets[userId];
+        usertweets.push_back (make_pair (tweetId, ++timestamp));
+        tweets[userId] = usertweets;
+    }
+    
+    /** Retrieve the 10 most recent tweet ids in the user's news feed. Each item in the news feed must be posted by users who the user followed or by the user herself. Tweets must be ordered from most recent to least recent. */
+    vector<int> getNewsFeed(int userId)
+    {
+        vector <int> res;
+        
+        // user tweets
+        vector <pair <int, int>> user_tweets = tweets[userId];
+
+        // follow tweets
+        vector <int> following_vec = follows[userId];
+        for (auto u : following_vec)
+        {
+            vector <pair <int, int>> fw_tweets = tweets[u];
+            for (auto x : fw_tweets)
+            {
+                user_tweets.push_back (x);
+            }
+        }
+
+        // get top 10
+        for (int i = 0; i < 10 && user_tweets.size () > 0; ++i)
+        {
+            int max = INT_MIN;
+            int maxp = -1;
+            int maxval = -1;
+            for (int i = 0; i < user_tweets.size (); ++i)
+            {
+                if (max < user_tweets[i].second)
+                {
+                    maxp = i;
+                    max = user_tweets[i].second;
+                    maxval = user_tweets[i].first;
+                }
+            }    
+            res.push_back (maxval);
+            user_tweets.erase (user_tweets.begin() + maxp);
+        }
+        return res;
+    }
+    
+    /** Follower follows a followee. If the operation is invalid, it should be a no-op. */
+    void follow(int followerId, int followeeId) 
+    {
+        if (followerId == followeeId)
+        {
+            return;
+        }
+        else
+        {
+            if (exists (followeeId, follows[followerId]))
+            {
+                return;
+            }
+            else
+            {
+                vector <int> userfollow = follows[followerId];
+                userfollow.push_back (followeeId);
+                follows[followerId] = userfollow;
+            }
+            
+        }
+        
+    }
+    
+    /** Follower unfollows a followee. If the operation is invalid, it should be a no-op. */
+    void unfollow(int followerId, int followeeId) 
+    {
+        if (followerId == followeeId)
+        {
+            return;
+        }
+        else
+        {
+            vector <int> userfollow = follows[followerId];
+            for (int i = 0; i < userfollow.size (); ++i)
+            {
+                if (userfollow[i] == followeeId)
+                {
+                    userfollow.erase (userfollow.begin() + i);
+                }
+            }
+            follows[followerId] = userfollow;
+        }
+    }
+};
+
+/**
+ * Your Twitter object will be instantiated and called as such:
+ * Twitter* obj = new Twitter();
+ * obj->postTweet(userId,tweetId);
+ * vector<int> param_2 = obj->getNewsFeed(userId);
+ * obj->follow(followerId,followeeId);
+ * obj->unfollow(followerId,followeeId);
+ */
