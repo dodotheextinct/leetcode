@@ -1,0 +1,64 @@
+/**
+ * Definition for a binary tree node.
+ * struct TreeNode {
+ *     int val;
+ *     TreeNode *left;
+ *     TreeNode *right;
+ *     TreeNode(int x) : val(x), left(NULL), right(NULL) {}
+ * };
+ */
+
+class Solution {
+public:
+    vector <TreeNode*> tree_nodes;
+    vector <TreeNode*> clone_nodes;
+    
+    void inorder_tree_nodes (TreeNode *node)
+    {
+        if (node == nullptr)
+        {
+            return;
+        }
+        inorder_tree_nodes (node->left);
+        tree_nodes.push_back (node);
+        inorder_tree_nodes (node->right);
+    }
+    
+    void inorder_clone_nodes (TreeNode *node)
+    {
+        if (node == nullptr)
+        {
+            return;
+        }
+        inorder_clone_nodes (node->left);
+        clone_nodes.push_back (node);
+        inorder_clone_nodes (node->right);
+    }
+    
+    TreeNode* getTargetCopy(TreeNode* original, TreeNode* cloned, TreeNode* target) 
+    {
+        inorder_tree_nodes (original);
+        inorder_clone_nodes (cloned);
+        
+        int target_idx = 0;
+        for (auto t : tree_nodes)
+        {
+            if (t == target)
+            {
+                break;
+            }
+            else
+            {
+                ++target_idx;
+            }
+        }
+        for (int i = 0; i < clone_nodes.size (); ++i)
+        {
+            if (i == target_idx)
+            {
+                return clone_nodes[i];
+            }
+        }
+        return nullptr;
+    }
+};
