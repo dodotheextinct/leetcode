@@ -1,0 +1,41 @@
+class ParkingSystem 
+{
+public:
+    int bigspace;
+    int medspace;
+    int smallspace;
+    
+    ParkingSystem(int big, int medium, int small) 
+    {
+        bigspace = big;
+        medspace = medium;
+        smallspace = small;
+    }
+    
+    bool addCar(int carType) 
+    {
+        bool res = false;
+        if (carType == 1 && bigspace > 0)
+        {
+            res = true;
+            --bigspace;
+        }
+        else if (carType == 2 && medspace > 0)
+        {
+            res = true;
+            --medspace;
+        }
+        else if (carType == 3 && smallspace > 0)
+        {
+            res = true;
+            --smallspace;
+        }
+        return res;
+    }
+};
+
+/**
+ * Your ParkingSystem object will be instantiated and called as such:
+ * ParkingSystem* obj = new ParkingSystem(big, medium, small);
+ * bool param_1 = obj->addCar(carType);
+ */
