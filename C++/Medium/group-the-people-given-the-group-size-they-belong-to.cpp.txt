@@ -1,0 +1,43 @@
+class Solution 
+{
+public:
+    vector<vector<int>> groupThePeople(vector<int>& groupSizes) 
+    {
+        vector <pair <int, vector <int>>> group_pr;
+        for (int i = 0; i < groupSizes.size (); ++i)
+        {
+            int size_group = groupSizes[i];
+            bool bInserted = false;
+            for (int j = 0; j < group_pr.size (); ++j)
+            {
+                if (group_pr[j].first == size_group)
+                {
+                    if (group_pr[j].second.size () < size_group)
+                    {
+                        group_pr[j].second.push_back (i);
+                        bInserted = true;
+                        break;
+                    }
+                    else
+                    {
+                        bInserted = false;
+                        continue;
+                    }
+                }
+            }
+            if (bInserted == false)
+            {
+                // create new group
+                vector <int> new_vec;
+                new_vec.push_back (i);
+                group_pr.push_back (make_pair (size_group, new_vec));
+            }
+        }
+        vector<vector<int>> res;
+        for (auto p : group_pr)
+        {
+            res.push_back (p.second);
+        }
+        return res;
+    }
+};
